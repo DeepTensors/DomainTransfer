@@ -163,3 +163,51 @@ class Model(object):
                     
                     # Return
                     return net
+                
+                
+    # Building the model function
+    def build_model(self):
+        
+        # checking the self.mode
+        
+        # Mode -> PreTrain
+        if self.mode == 'pretrain':
+            
+            # Placeholder for svhn images
+            self.images = tf.placeholder()
+            
+            # Placeholder for svhn labels
+            self.labels = tf.placeholder()
+            
+            # Logits
+            self.logits = self.content_extractor(self.images)
+            
+            # Predictions 
+            self.pred = tf.argmax(self.logits , axis = 1)
+            
+            # Correct Predictions
+            # tf.equal returns boolean
+            self.correct_pred = tf.equal(self.pred , self.labels)
+            
+            # finding accuracy
+            self.accuracy = tf.reduce_mean(tf.cast(self.correct_pred , tf.float32))
+            
+            # loss
+            self.loss = slim.losses.sparse_softmax_cross_entropy(self.logits , self.labels)
+            
+            # Optimizer
+            self.optimizer = tf.train.AdamOptimizer(self.learning_rate)
+            
+            # Creating an Operation that evaluates the gradients and returns the loss.
+            self.train_op = slim.learning.create_train_op(self.loss , self.optimizer)
+            
+            # Loss Summary
+            loss_summary = tf.summary.scalar('classification_loss' , self.loss)
+        
+            # Accuracy Summary
+            accuracy_summary = tf.summary.scalar('accuracy' , self.accuracy)
+            
+            # Combined Summary
+            self.summary_op = tf.summary.merge([loss_summary , accuracy_summary])
+            
+                
