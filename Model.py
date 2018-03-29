@@ -210,4 +210,17 @@ class Model(object):
             # Combined Summary
             self.summary_op = tf.summary.merge([loss_summary , accuracy_summary])
             
-                
+        # Mode -> evaluation    
+        elif self.mode == 'eval':
+            
+            # Placeholder for svhn images
+            self.images = tf.placeholder()
+            
+            # SVHN -> MNIST
+            # 1. Pass svhn images to content extractor 
+            # 2. pass the result to genrator
+            
+            self.fx = self.content_extractor(self.images)
+            self.sampled_img = self.generator(self.fx)
+            
+            
