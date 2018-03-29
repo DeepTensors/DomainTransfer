@@ -223,4 +223,49 @@ class Model(object):
             self.fx = self.content_extractor(self.images)
             self.sampled_img = self.generator(self.fx)
             
+        # Mode -> Train
+        elif self.mode == 'train':
             
+            # Placeholder for svhn images (source img)
+            # Placeholder for mnist images (target img)
+            
+            # To clarify more see the diagram
+            
+            # Source Domain (SVHN -> MNIST)
+            #  Pass svhn images to content extractor to genrate fx 
+            #  pass the result to genrator -> fake images
+            #  Pass the fake images to dicriminator -> logits
+            #  Pass the fake images to the content extractor -> fgfx
+            
+            # LOSSES
+            # Dicriminator loss
+            # Genrator Loss
+            # Function content extractor loss
+            
+            # Optimizers
+            # Dicriminator Optimizer
+            # Genrator Optimizer
+            # function Optimizer
+            
+            # Get Trainable Variables
+            
+            # Discriminator Variables
+            # Genrator Variables
+            # Function Content Extractor Variables
+            
+            # Making the training operations
+            # Scope -> source_train_op
+                # Discriminator Training operations
+                # Generator Training Operations
+                # Function content extractor Training Operations
+                
+            
+            # Summary Operations
+            # Disriminator loss summary
+            # Genrator loss summary
+            # Function content extractor loss summary
+            # Origin image summary
+            # Sampled image summary
+            # Merging the summaries
+            
+            # Target Domain (MNIST)
