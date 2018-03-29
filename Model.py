@@ -120,3 +120,46 @@ class Model(object):
                     
                     # Return
                     return net
+
+    # Discriminator
+    # Input -> (batch_size , 32 , 32 , 1)
+    def discriminator(self , inputs , reuse = False):
+        
+        # Scope of Variables -> discriminator
+        with tf.variable_scope('discriminator' , reuse = reuse):
+            # making the slim arg scope for default values
+            with slim.arg_scope([slim.conv2d] , padding = 'SAME' , activation_fn = None ,
+                                stride = 2 , weights_initializer = tf.contrib.layers.xavier_initializer()):
+                with slim.arg_scope([slim.batch_norm] , decay = 0.95 , center = True , scale = True ,
+                                    activation_fn = tf.nn.relu , is_training = (self.mode == 'train')):
+                    
+                    # Conv Layer
+                    # Output -> (batch_size , 16 , 16 , 128)
+                    net = slim.conv2d(inputs , 128 , [3,3] , scope = 'conv1')
+                    
+                    # Batch norm
+                    net = slim.batch_norm(net , scope = 'bn1')
+                    
+                    # Conv Layer
+                    # Output -> (batch_size , 8 , 8 , 256)
+                    net = slim.conv2d(net , 256 , [3,3] , scope = 'conv2')
+                    
+                    # Batch norm
+                    net = slim.batch_norm(net , scope = 'bn2')
+                    
+                    # Conv Layer
+                    # Output -> (batch_size , 4 , 4 , 512)
+                    net = slim.conv2d(net , 512 , [3,3] ,scope = 'conv3')
+                    
+                    # Batch norm
+                    net = slim.batch_norm(net , scope = 'bn3')
+                    
+                    # Conv Layer
+                    # Output -> (batch_size , 1 , 1 , 1)
+                    net = slim.conv2d(net , 1 , [4,4] , padding = 'VALID' , scope = 'conv4')
+                    
+                    # Flattening
+                    net = slim.flatten(net)
+                    
+                    # Return
+                    return net
